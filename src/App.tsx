@@ -78,8 +78,8 @@ const App = () => {
     </div>
     <div className="Storage">
       <button className="StorageButton" onClick={() => clearCurrencyList(currencyList, setCurrencyList)} title="Clear">Clear</button>
-      <button className="StorageButton" onClick={() => localStorage.setItem("list", JSON.stringify(currencyList.map(entry => entry.pair)))} title="Save in Browser">Save in Browser</button>
-      <button className="StorageButton" onClick={() => subscribeFromLocalStorage(currencyList, setCurrencyList)} title="Retrieve last Config">Retrieve last Config</button>
+      <button className="StorageButton" onClick={() => localStorage.setItem("list", JSON.stringify(currencyList.map(entry => entry.pair)))} title="Save in Browser">Save</button>
+      <button className="StorageButton" onClick={() => subscribeFromLocalStorage(currencyList, setCurrencyList)} title="Retrieve last Config">Load</button>
     </div>
   </div>;
 
