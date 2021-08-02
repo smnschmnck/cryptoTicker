@@ -71,7 +71,7 @@ const App = () => {
         <form className="AddPair" onSubmit={event=>event.preventDefault()} onClick={() => document.getElementById('PairInput')?.focus()} autoComplete="off">
           <input id="PairInput" className="PairInput" value={pairInput} onChange={e => setPairInput(e.target.value.toUpperCase())} placeholder={"Add pair..."} autoFocus list="PairList"/>
           <datalist id="PairList">
-            {assetPairs.filter(pair => pair.match("^"+pairInput)).map(pair => <option key={pair}>{pair}</option>)}
+            {assetPairs.filter(pair => pair.match("^"+pairInput.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))).map(pair => <option key={pair}>{pair}</option>)}
           </datalist>
           <button title="Add" className="AddButton" onClick={() => {subscribeToPair(pairInput, currencyList, setCurrencyList); setPairInput("");}}/>
         </form>
