@@ -1,38 +1,158 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.Loader{
+  height: 100vh;
+  width: 100vw;
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
+}
+
+.LoadGif{
+  height: 200px;
+  width: auto;
+  background-size: cover;
+}
+
+.Waiting{
+  font-weight: bold;
+}
+
+h1{
+  font-weight: 300;
+  text-align: center;
+  padding: 0;
+  margin: 2rem;
+  margin-bottom: 4rem;
+  color: #1D74FF;
+}
+
+h3{
+  font-weight: 300;
+  text-align: center;
+  padding: 0;
+  margin: 10px;
+  min-height: 40px;
+  color: #1d74ff;
+}
+
+b{
+  font-weight: bold;
+}
+
+.Ticker {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  overflow: scroll;
+  height: fit-content;
+}
+
+.PairView{
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  text-align: center;
+  border-radius: 25px;
+  min-height: 40px;
+  width: 220px;
+  margin: 10px;
+  background-color: #1D74FF;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.InfoView{
+  width: 170px;
+  text-align: center;
+  border: none;
+  margin: 5px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.DelButton{
+  height: 15px;
+  width: 15px;
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: url("img/del.png");
+  background-size: cover;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.AddPair{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-radius: 25px;
+  min-height: 40px;
+  width: 220px;
+  padding: 0;
+  margin: 10px;
+  border: 2px solid #1D74FF;
+  cursor: text;
+}
+
+.PairInput{
+  text-align: center;
+  border: none;
+  width: 150px;
+  padding-left: 20px;
+  margin: 5px;
+  border-radius: 0;
+}
+
+.PairInput:focus{
+  outline: none;
+  border-radius: 0;
+}
+
+.AddButton{
+  height: 15px;
+  width: 15px;
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: url("img/plus2.png");
+  background-size: cover;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.Storage{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  border: none;
+  background-color: transparent;
+}
+
+.StorageButton{
+  width: 200px;
+  height: 50px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: #1D74FF;
+}
+
+@media only screen and (min-width: 600px) {
+  .AddButton:hover{
+    transform: scale(1.2);
   }
-  to {
-    transform: rotate(360deg);
+
+  .DelButton:hover{
+    transform: scale(1.2);
+  }  
+
+  .StorageButton:hover{
+    font-weight: bold;
+  }
+
+  .Ticker{
+    flex-wrap: wrap;
+    height: 75vh;
   }
 }
