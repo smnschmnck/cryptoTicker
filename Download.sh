@@ -26,4 +26,4 @@ echo -n "];" >> AssetPairs.tsx
 
 cd..
 
-npm start
+npm run build
