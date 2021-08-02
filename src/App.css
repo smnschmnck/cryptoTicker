@@ -46,6 +46,7 @@ b{
   flex-wrap: nowrap;
   overflow: scroll;
   height: fit-content;
+  min-height: 55vh;
 }
 
 .PairView{
@@ -130,7 +131,7 @@ b{
 }
 
 .StorageButton{
-  width: 200px;
+  width: 150px;
   height: 50px;
   background-color: transparent;
   border: none;
