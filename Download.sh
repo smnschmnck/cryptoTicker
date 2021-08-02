@@ -24,6 +24,6 @@ for((i=0; i<${#array[@]}; i++))
 
 echo -n "];" >> AssetPairs.tsx
 
-cd..
+cd ..
 
 npm run build
