@@ -47,7 +47,17 @@ const App = () => {
   }
 
   socket.onopen = () => {
+    if(localStorage.emergencyList){
+      subscribeToPair(localStorage.emergencyList, currencyList, setCurrencyList);
+    }
+    localStorage.removeItem("emergencyList");
     setConnectionEst(true);
+  }
+
+  socket.onclose = () => {
+    alert("Connection Lost. Please Reload");
+    localStorage.setItem("emergencyList", JSON.stringify(currencyList.map(entry => entry.pair)))
+    window.location.reload();
   }
 
   let loading = <div className="Loader">
@@ -67,18 +77,18 @@ const App = () => {
             setCurrencyList={setCurrencyList}
             unsubscribe={unsubscribe}/>)
         }
-        {currencyList.length===0 ? <h3><b>Add Crypto Trading Pair </b>(i.e. ETH/EUR)</h3> : null}
+        {currencyList.length ===0 ? <h3><b>Add Crypto Trading Pair </b>(i.e. ETH/EUR)</h3> : null}
         <form className="AddPair" onSubmit={event=>event.preventDefault()} onClick={() => document.getElementById('PairInput')?.focus()} autoComplete="off">
           <input id="PairInput" className="PairInput" value={pairInput} onChange={e => setPairInput(e.target.value.toUpperCase())} placeholder={"Add pair..."} autoFocus list="PairList"/>
           <datalist id="PairList">
             {assetPairs.filter(pair => pair.match("^"+pairInput.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))).map(pair => <option key={pair}>{pair}</option>)}
           </datalist>
-          <button title="Add" className="AddButton" onClick={() => {subscribeToPair(pairInput, currencyList, setCurrencyList); setPairInput("");}}/>
+          <button title="Add" className="AddButton" onClick={() => {subscribeToPair(JSON.stringify([pairInput]), currencyList, setCurrencyList); setPairInput("");}}/>
         </form>
     </div>
     <div className="Storage">
       <button className="StorageButton" onClick={() => clearCurrencyList(currencyList, setCurrencyList)} title="Clear">Clear</button>
-      <button className="StorageButton" onClick={() => localStorage.setItem("list", JSON.stringify(currencyList.map(entry => entry.pair)))} title="Save in Browser">Save</button>
+      <button className="StorageButton" onClick={() => saveToLocalStorage(currencyList)} title="Save in Browser">Save</button>
       <button className="StorageButton" onClick={() => subscribeFromLocalStorage(currencyList, setCurrencyList)} title="Retrieve last Config">Load</button>
     </div>
   </div>;
@@ -90,9 +100,7 @@ const App = () => {
 const subscribeToPair = (pair: string, currencyList: Currency[], setCurrencyList: (currencyList: Currency[]) => void) => {
   let sub = {
     "event": "subscribe",
-    "pair": [
-      pair
-    ],
+    "pair": JSON.parse(pair),
     "subscription": {
       "name": "ticker"
     }
@@ -101,12 +109,13 @@ const subscribeToPair = (pair: string, currencyList: Currency[], setCurrencyList
   socket.send(JSON.stringify(sub));
 }
 
+const saveToLocalStorage = (currencyList: Currency[]) => {
+    localStorage.setItem("list", JSON.stringify(currencyList.map(entry => entry.pair)));
+}
+
 const subscribeFromLocalStorage = (currencyList: Currency[], setCurrencyList: (currencyList: Currency[]) => void) => {
-  let localCurrencyList = JSON.parse(localStorage.list);
   clearCurrencyList(currencyList, setCurrencyList);
-  for(let i = 0; i<localCurrencyList.length; i++){
-    subscribeToPair(localCurrencyList[i], currencyList, setCurrencyList);
-  }
+  subscribeToPair(localStorage.list, currencyList, setCurrencyList);
 }
 
 const clearCurrencyList =  (currencyList: Currency[], setCurrencyList: (currencyList: Currency[]) => void) => {
@@ -129,11 +138,6 @@ const unsubscribe = (pair: string) => {
   };
 
   socket.send(JSON.stringify(unSub));
-}
-
-socket.onclose = () => {
-  alert("Connection Lost. Please Reload");
-  window.location.reload();
 }
 
 export default App;
