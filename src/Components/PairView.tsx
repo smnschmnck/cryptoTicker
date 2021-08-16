@@ -157,6 +157,9 @@ const getChartData = async(pair: string, mode: string) => {
 
 const ChartButtons = (props: any) => {
 
+  let pair = props.pair;
+  let setChart = props.setChart;
+
   let buttonArray = [
     {className: "GraphModeButton", mode: "1H"},
     {className: "GraphModeButtonSelected", mode: "1D"},
@@ -189,7 +192,7 @@ const ChartButtons = (props: any) => {
 
     return(
       <button className={props.className} onClick={async() => {
-        props.setChart(await drawChart(props.pair, props.mode));
+        setChart(await drawChart(pair, props.mode));
         unBold();
         makeBold();
       }}>{props.mode}</button>
@@ -198,7 +201,7 @@ const ChartButtons = (props: any) => {
 
   return(
     <div className="Buttons">
-      {buttonList.map(button => <ChartButton className={button.className} mode={button.mode} pair={props.pair} setChart={props.setChart}/>)}
+      {buttonList.map(button => <ChartButton className={button.className} mode={button.mode}/>)}
     </div>
   );
 }
