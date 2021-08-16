@@ -39,6 +39,14 @@ b{
   font-weight: bold;
 }
 
+.Err{
+  color: red;
+  background-color: white;
+  padding: 5px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
 .Ticker {
   display: flex;
   align-items: center;

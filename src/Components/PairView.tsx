@@ -16,7 +16,7 @@ export const PairView: React.FC<PairViewProps> = (props) => {
     let firstCur = props.pair.split("/")[0];
     let secondCur = props.pair.split("/")[1];
     const[chart, setChart] = useState(<></>);
-    const [showChart, setShowChart] = useState(false)
+    const [showChart, setShowChart] = useState(false);
     return(
         <div className="PairView">
             <div className="PairContainer">
@@ -40,6 +40,12 @@ const drawChart = async(setChart: (el: JSX.Element) => void, pair: string, mode:
 
     let time = (await getChartData(pair, mode)).time;
     let price = (await getChartData(pair, mode)).price;
+
+    if(time[0] === "Error" || price[0] === "Error"){
+      setChart(<p><b className="Err">Failed to fetch Graph Data</b></p>);
+      return;
+    }
+
     let crypto = pair.split("/")[0];
     let fiat = pair.split("/")[1];
 
@@ -64,26 +70,40 @@ const drawChart = async(setChart: (el: JSX.Element) => void, pair: string, mode:
 
     defaults.color = "#ffffff";
 
-    let x = <Line data={dat} options={opt}/>;
+    let chart = <div>
+        <Line data={dat} options={opt}/>
+        <div className="buttons">
+            <button id="hour" onClick={async() => drawChart(setChart, pair, "hour", showChart, setShowChart)}>1H</button>
+            <button id="day" onClick={async() => drawChart(setChart, pair, "day", showChart, setShowChart)}>1D</button>
+            <button id="month" onClick={async() => drawChart(setChart, pair, "month", showChart, setShowChart)}>1M</button>
+            <button id="year" onClick={async() => drawChart(setChart, pair, "year", showChart, setShowChart)}>1Y</button>
+            <button id="all" onClick={async() => drawChart(setChart, pair, "all", showChart, setShowChart)}>All</button>
+        </div>
+      </div>;
 
-    setChart(x);
+    setChart(chart);
 }
 
 const getCur = async (pair: string) => {
     let cryptoCur = pair.split("/")[0].toLowerCase();
 
-    let res = await fetch("https://api.coingecko.com/api/v3/coins/list");
-    if(res.status >= 400 && res.status < 600){
-        alert("Oh no! This currency seems to not exist!");
-        return "Error";
+    try{
+      let res = await fetch("https://api.coingecko.com/api/v3/coins/list");
+      if(res.status >= 400 && res.status < 600){
+          alert("Oh no! This currency seems to not exist!");
+          return "Error";
+      }
+      let jsonList = await res.json();
+      
+      for(let x of jsonList){
+          if((await x.symbol === cryptoCur) && (!JSON.stringify(await x.id).includes("binance"))){
+              return x.id;
+          }
+      }
+    }catch(err){
+      console.error(`ERROR: ${err}`);
     }
-    let jsonList = await res.json();
-    
-    for(let x of jsonList){
-        if((await x.symbol === cryptoCur) && (!JSON.stringify(await x.id).includes("binance"))){
-            return x.id;
-        }
-    }
+
 
     return "Error";
 }
@@ -91,6 +111,9 @@ const getCur = async (pair: string) => {
 const getChartData = async(pair: string, mode: string) => {
 
     let crypto = await getCur(pair);
+    if(crypto === "Error"){
+      return {time: ["Error"], price: ["Error"]};
+    }
     let fiat = pair.split("/")[1].toLowerCase();
     let days = "0";
     let interval = "";
