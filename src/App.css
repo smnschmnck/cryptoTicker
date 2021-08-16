@@ -54,16 +54,28 @@ b{
   align-items: center;
   justify-content: center;
   text-align: center;
+  flex-direction: column;
   border-radius: 25px;
   min-height: 40px;
-  width: 220px;
+  min-width: 220px;
   margin: 10px;
   background-color: #1D74FF;
   color: white;
 }
 
+p{
+  word-break: break-all;
+}
+
+.PairContainer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
 .InfoView{
-  width: 170px;
+  width: 160px;
   text-align: center;
   border: none;
   margin: 5px;
@@ -74,8 +86,18 @@ b{
   width: 15px;
   border: none;
   padding: 0;
-  margin: 0;
   background: url("img/del.png");
+  background-size: cover;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.GraphButton{
+  height: 15px;
+  width: 15px;
+  border: none;
+  padding: 0;
+  background: url("img/graph.png");
   background-size: cover;
   transition: 0.2s;
   cursor: pointer;
@@ -102,6 +124,10 @@ b{
   padding-left: 20px;
   margin: 5px;
   border-radius: 0;
+}
+
+canvas{
+  margin: 25px;
 }
 
 .PairInput:focus{
@@ -147,6 +173,10 @@ b{
   .DelButton:hover{
     transform: scale(1.2);
   }  
+
+  .GraphButton:hover{
+    transform: scale(1.2);
+  } 
 
   .StorageButton:hover{
     font-weight: bold;
