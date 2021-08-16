@@ -33,18 +33,6 @@ export const PairView: React.FC<PairViewProps> = (props) => {
   );
 }
 
-const ChartButtons = (props: any) => {
-  return(
-    <div className="Buttons">
-      <button className="GraphModeButton" onClick={async() => {props.setChart(await drawChart(props.pair, "1H"))}}>1H</button>
-      <button className="GraphModeButton" onClick={async() => {props.setChart(await drawChart(props.pair, "1D"))}}>1D</button>
-      <button className="GraphModeButton" onClick={async() => {props.setChart(await drawChart(props.pair, "1M"))}}>1M</button>
-      <button className="GraphModeButton" onClick={async() => {props.setChart(await drawChart(props.pair, "1Y"))}}>1Y</button>
-      <button className="GraphModeButton" onClick={async() => {props.setChart(await drawChart(props.pair, "ALL"))}}>ALL</button>
-    </div>
-  );
-}
-
 const drawChart = async(pair: string, mode: string) => {
     let time = (await getChartData(pair, mode)).time;
     let price = (await getChartData(pair, mode)).price;
@@ -165,4 +153,52 @@ const getChartData = async(pair: string, mode: string) => {
     }
 
     return {time: time, price: price};
+}
+
+const ChartButtons = (props: any) => {
+
+  let buttonArray = [
+    {className: "GraphModeButton", mode: "1H"},
+    {className: "GraphModeButtonSelected", mode: "1D"},
+    {className: "GraphModeButton", mode: "1W"},
+    {className: "GraphModeButton", mode: "1M"},
+    {className: "GraphModeButton", mode: "1Y"},
+    {className: "GraphModeButton", mode: "ALL"},
+  ];
+  const[buttonList, setButtonList] = useState(buttonArray);
+
+  const ChartButton = (props: any) => {
+
+    const unBold = () => {
+      let bListCopy = [...buttonList];
+      bListCopy.forEach(button => {
+        button.className = "GraphModeButton";
+      });
+      setButtonList(bListCopy);
+    }
+
+    const makeBold = () => {
+      let bListCopy = [...buttonList];
+      bListCopy.forEach(button => {
+        if(button.mode === props.mode){
+          button.className = "GraphModeButtonSelected";
+        }
+      });
+      setButtonList(bListCopy);
+    }
+
+    return(
+      <button className={props.className} onClick={async() => {
+        props.setChart(await drawChart(props.pair, props.mode));
+        unBold();
+        makeBold();
+      }}>{props.mode}</button>
+      );
+  }
+
+  return(
+    <div className="Buttons">
+      {buttonList.map(button => <ChartButton className={button.className} mode={button.mode} pair={props.pair} setChart={props.setChart}/>)}
+    </div>
+  );
 }
