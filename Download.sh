@@ -22,7 +22,7 @@ for((i=0; i<${#array[@]}; i++))
         fi
     done
 
-echo -n "];" >> AssetPairs.tsx
+echo -n "].sort();" >> AssetPairs.tsx
 
 cd ..
 
