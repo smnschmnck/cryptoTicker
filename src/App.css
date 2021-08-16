@@ -64,11 +64,11 @@ b{
   text-align: center;
   flex-direction: column;
   border-radius: 25px;
-  min-height: 40px;
   min-width: 220px;
   margin: 10px;
   background-color: #1D74FF;
   color: white;
+  transition: 0.5s;
 }
 
 p{
@@ -83,7 +83,11 @@ p{
 }
 
 .InfoView{
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 160px;
+  height: 40px;
   text-align: center;
   border: none;
   margin: 5px;
