@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import { Line, defaults } from 'react-chartjs-2';
+import { list } from './List';
 
 interface Currency{
     pair: string;
@@ -17,6 +18,7 @@ export const PairView: React.FC<PairViewProps> = (props) => {
     let secondCur = props.pair.split("/")[1];
     const[chart, setChart] = useState(<></>);
     const [showChart, setShowChart] = useState(false);
+    console.log("rendering!");
     return(
         <div className="PairView">
             <div className="PairContainer">
@@ -73,44 +75,31 @@ const drawChart = async(setChart: (el: JSX.Element) => void, pair: string, mode:
     let chart = <div>
         <Line data={dat} options={opt}/>
         <div className="buttons">
-            <button id="hour" onClick={async() => drawChart(setChart, pair, "hour", showChart, setShowChart)}>1H</button>
-            <button id="day" onClick={async() => drawChart(setChart, pair, "day", showChart, setShowChart)}>1D</button>
-            <button id="month" onClick={async() => drawChart(setChart, pair, "month", showChart, setShowChart)}>1M</button>
-            <button id="year" onClick={async() => drawChart(setChart, pair, "year", showChart, setShowChart)}>1Y</button>
-            <button id="all" onClick={async() => drawChart(setChart, pair, "all", showChart, setShowChart)}>All</button>
+            <button className="GraphModeButton" id="hour" onClick={async() => drawChart(setChart, pair, "hour", showChart, setShowChart)}>1H</button>
+            <button className="GraphModeButton" id="day" onClick={async() => drawChart(setChart, pair, "day", showChart, setShowChart)}>1D</button>
+            <button className="GraphModeButton" id="month" onClick={async() => drawChart(setChart, pair, "month", showChart, setShowChart)}>1M</button>
+            <button className="GraphModeButton" id="year" onClick={async() => drawChart(setChart, pair, "year", showChart, setShowChart)}>1Y</button>
+            <button className="GraphModeButton" id="all" onClick={async() => drawChart(setChart, pair, "all", showChart, setShowChart)}>All</button>
         </div>
       </div>;
 
     setChart(chart);
 }
 
-const getCur = async (pair: string) => {
+const getCur = (pair: string) => {
     let cryptoCur = pair.split("/")[0].toLowerCase();
 
-    try{
-      let res = await fetch("https://api.coingecko.com/api/v3/coins/list");
-      if(res.status >= 400 && res.status < 600){
-          alert("Oh no! This currency seems to not exist!");
-          return "Error";
+    for(const entry of list){
+      if(entry.symbol === cryptoCur && (! entry.id.includes("binance"))){
+        return entry.id;
       }
-      let jsonList = await res.json();
-      
-      for(let x of jsonList){
-          if((await x.symbol === cryptoCur) && (!JSON.stringify(await x.id).includes("binance"))){
-              return x.id;
-          }
-      }
-    }catch(err){
-      console.error(`ERROR: ${err}`);
     }
-
-
     return "Error";
 }
 
 const getChartData = async(pair: string, mode: string) => {
 
-    let crypto = await getCur(pair);
+    let crypto = getCur(pair);
     if(crypto === "Error"){
       return {time: ["Error"], price: ["Error"]};
     }

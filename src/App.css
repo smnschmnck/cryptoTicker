@@ -111,6 +111,14 @@ p{
   cursor: pointer;
 }
 
+.GraphModeButton{
+  border: none;
+  background-color: transparent;
+  color: white;
+  width: 50px;
+  height: 50px;
+}
+
 .AddPair{
   display: flex;
   justify-content: center;
@@ -193,5 +201,9 @@ canvas{
   .Ticker{
     flex-wrap: wrap;
     height: 75vh;
+  }
+
+  .GraphModeButton:hover{
+    font-weight: bold;
   }
 }
