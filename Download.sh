@@ -26,4 +26,12 @@ echo -n "].sort();" >> AssetPairs.tsx
 
 cd ..
 
+rm -R ../crypto-ticker-prod/build
+
 npm run build
+
+cp -R ./build ../crypto-ticker-prod
+
+cd ../crypto-ticker-prod
+
+npm start
