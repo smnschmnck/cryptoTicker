@@ -14,38 +14,43 @@ interface PairViewProps extends Currency{
 }
 
 export const PairView: React.FC<PairViewProps> = (props) => {
-    let firstCur = props.pair.split("/")[0];
-    let secondCur = props.pair.split("/")[1];
-    const[chart, setChart] = useState(<></>);
-    const [showChart, setShowChart] = useState(false);
-    console.log("rendering!");
-    return(
-        <div className="PairView">
-            <div className="PairContainer">
-                <button className="GraphButton" onClick={async() => drawChart(setChart, props.pair, "day", showChart, setShowChart)}></button>
-                <p className="InfoView"><b>{firstCur}</b>: {props.price + secondCur}</p>
-                <button className="DelButton" title="Delete" onClick={() => {
-                    props.setCurrencyList(props.currencyList.filter(currency => currency.pair !== props.pair));
-                    props.unsubscribe(props.pair);
-                }}/>
-            </div>
-            {showChart ? chart : null}
-        </div>
-    );
+  let firstCur = props.pair.split("/")[0];
+  let secondCur = props.pair.split("/")[1];
+  const [showChart, setShowChart] = useState(false);
+  const [chart, setChart] = useState(<></>);
+  return(
+      <div className="PairView">
+          <div className="PairContainer">
+              <button className="GraphButton" onClick={async() => {setChart(await drawChart(props.pair, "1D")); setShowChart(!showChart)}}/>
+              <p className="InfoView"><b>{firstCur}</b>: {props.price + secondCur}</p>
+              <button className="DelButton" title="Delete" onClick={() => {
+                  props.setCurrencyList(props.currencyList.filter(currency => currency.pair !== props.pair));
+                  props.unsubscribe(props.pair);
+              }}/>
+          </div>
+          {showChart ? <div>{chart}<ChartButtons setChart={setChart} pair={props.pair}/></div> : null}
+      </div>
+  );
 }
 
-const drawChart = async(setChart: (el: JSX.Element) => void, pair: string, mode: string, showChart: boolean, setShowChart: (showChart: boolean) => void) => {
+const ChartButtons = (props: any) => {
+  return(
+    <div className="Buttons">
+      <button className="GraphModeButton" onClick={async() => {props.setChart(await drawChart(props.pair, "1H"))}}>1H</button>
+      <button className="GraphModeButton" onClick={async() => {props.setChart(await drawChart(props.pair, "1D"))}}>1D</button>
+      <button className="GraphModeButton" onClick={async() => {props.setChart(await drawChart(props.pair, "1M"))}}>1M</button>
+      <button className="GraphModeButton" onClick={async() => {props.setChart(await drawChart(props.pair, "1Y"))}}>1Y</button>
+      <button className="GraphModeButton" onClick={async() => {props.setChart(await drawChart(props.pair, "ALL"))}}>ALL</button>
+    </div>
+  );
+}
 
-    setShowChart(!showChart);
-
-    if(showChart) return;
-
+const drawChart = async(pair: string, mode: string) => {
     let time = (await getChartData(pair, mode)).time;
     let price = (await getChartData(pair, mode)).price;
 
     if(time[0] === "Error" || price[0] === "Error"){
-      setChart(<p><b className="Err">Failed to fetch Graph Data</b></p>);
-      return;
+      return(<p><b className="Err">Failed to fetch Graph Data</b></p>);
     }
 
     let crypto = pair.split("/")[0];
@@ -57,7 +62,7 @@ const drawChart = async(setChart: (el: JSX.Element) => void, pair: string, mode:
         borderColor: "white",
         data: price,
         fill: true,
-        pointRadius: 0
+        pointRadius: 2.5
       }],
     };
 
@@ -69,26 +74,14 @@ const drawChart = async(setChart: (el: JSX.Element) => void, pair: string, mode:
       },
       tension: 0.5
     };
-
     defaults.color = "#ffffff";
 
-    let chart = <div>
-        <Line data={dat} options={opt}/>
-        <div className="buttons">
-            <button className="GraphModeButton" id="hour" onClick={async() => drawChart(setChart, pair, "hour", showChart, setShowChart)}>1H</button>
-            <button className="GraphModeButton" id="day" onClick={async() => drawChart(setChart, pair, "day", showChart, setShowChart)}>1D</button>
-            <button className="GraphModeButton" id="month" onClick={async() => drawChart(setChart, pair, "month", showChart, setShowChart)}>1M</button>
-            <button className="GraphModeButton" id="year" onClick={async() => drawChart(setChart, pair, "year", showChart, setShowChart)}>1Y</button>
-            <button className="GraphModeButton" id="all" onClick={async() => drawChart(setChart, pair, "all", showChart, setShowChart)}>All</button>
-        </div>
-      </div>;
-
-    setChart(chart);
+    let chart = <Line data={dat} options={opt}/>;
+    return chart;
 }
 
 const getCur = (pair: string) => {
     let cryptoCur = pair.split("/")[0].toLowerCase();
-
     for(const entry of list){
       if(entry.symbol === cryptoCur && (! entry.id.includes("binance"))){
         return entry.id;
@@ -98,7 +91,6 @@ const getCur = (pair: string) => {
 }
 
 const getChartData = async(pair: string, mode: string) => {
-
     let crypto = getCur(pair);
     if(crypto === "Error"){
       return {time: ["Error"], price: ["Error"]};
@@ -108,27 +100,27 @@ const getChartData = async(pair: string, mode: string) => {
     let interval = "";
   
     switch (mode) {
-      case "all":
+      case "ALL":
         days="max";
-        interval="";
+        interval="monthly";
         break;
-      case "year":
+      case "1Y":
         days="365";
         interval="weekly";
         break;
-      case "month":
+      case "1M":
         days = "30";
         interval="daily";
         break;
-      case "week":
+      case "1W":
         days = "7";
         interval="daily";
         break;
-      case "day":
+      case "1D":
         days = "1";
         interval="hourly";
         break;
-      case "hour":
+      case "1H":
         days = "1";
         interval="minutely";
         break;
@@ -146,7 +138,7 @@ const getChartData = async(pair: string, mode: string) => {
     let arr = await json.prices;
     let time = [];
     let price = [];
-    if(mode !== 'hour'){
+    if(mode !== '1H'){
       for(let entry of arr){
         let currentTime = await entry[0];
         let date = new Date(await currentTime);
