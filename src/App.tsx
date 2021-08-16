@@ -98,9 +98,19 @@ const App = () => {
 }
 
 const subscribeToPair = (pair: string, currencyList: Currency[], setCurrencyList: (currencyList: Currency[]) => void) => {
+
+  let jsonPair = {};
+
+  try{
+    jsonPair = JSON.parse(pair);
+  }catch(err){
+    localStorage.setItem("list", "[]");
+    return;
+  }
+
   let sub = {
     "event": "subscribe",
-    "pair": JSON.parse(pair),
+    "pair": jsonPair,
     "subscription": {
       "name": "ticker"
     }
