@@ -110,10 +110,12 @@ const App = () => {
           {focusOnInp ? <div className="PairList">
               {assetPairs.filter(pair => 
                 pair.match("^"+pairInput.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')))
-                .map(pair => <button className="assButt" key={pair} 
-                onMouseDown={() => {
-                  subscribeToPair(JSON.stringify([pair]), currencyList, setCurrencyList);
-                  setPairInput("");
+                .map(pair => <button 
+                  className="assButt" 
+                  key={pair} 
+                  onMouseDown={() => {
+                    subscribeToPair(JSON.stringify([pair]), currencyList, setCurrencyList);
+                    setPairInput("");
                 }}>{pair}</button>)}
           </div> : null}
         </div>

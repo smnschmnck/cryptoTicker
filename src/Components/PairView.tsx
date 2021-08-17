@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Line, defaults } from 'react-chartjs-2';
 import { list } from './List';
 
@@ -170,6 +170,11 @@ const ChartButtons:React.FC<ChartButtonsProps> = ({pair, setChart}) => {
     let el = document.getElementById(id) as HTMLElement;
     el.style.fontWeight = "bold";
   }
+
+  useEffect(() => {
+    let el = document.getElementById("day") as HTMLElement;
+    el.style.fontWeight = "bold";
+  }, []);
 
   return(
     <div className="Buttons">
