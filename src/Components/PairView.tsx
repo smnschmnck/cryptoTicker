@@ -14,22 +14,23 @@ interface PairViewProps extends Currency{
     unsubscribe: (pair: string) => void;
 }
 
-export const PairView: React.FC<PairViewProps> = (props) => {
-  let firstCur = props.pair.split("/")[0];
-  let secondCur = props.pair.split("/")[1];
+export const PairView: React.FC<PairViewProps> = ({pair, price, currencyList, setCurrencyList, unsubscribe}) => {
+
+  let firstCur = pair.split("/")[0];
+  let secondCur = pair.split("/")[1];
   const [showChart, setShowChart] = useState(false);
   const [chart, setChart] = useState(<></>);
   return(
       <div className="PairView">
           <div className="PairContainer">
-              <button className="GraphButton" onClick={async() => {setChart(await drawChart(props.pair, "1D")); setShowChart(!showChart)}}/>
-              <p className="InfoView"><b>{firstCur}</b>: {props.price + secondCur}</p>
+              <button className="GraphButton" onClick={async() => {setChart(await drawChart(pair, "1D")); setShowChart(!showChart)}}/>
+              <p className="InfoView"><b>{firstCur}</b>: {price + secondCur}</p>
               <button className="DelButton" title="Delete" onClick={() => {
-                  props.setCurrencyList(props.currencyList.filter(currency => currency.pair !== props.pair));
-                  props.unsubscribe(JSON.stringify([props.pair]));
+                  setCurrencyList(currencyList.filter(currency => currency.pair !== pair));
+                  unsubscribe(JSON.stringify([pair]));
               }}/>
           </div>
-          {showChart ? <div>{chart}<ChartButtons setChart={setChart} pair={props.pair}/></div> : null}
+          {showChart ? <div>{chart}<ChartButtons setChart={setChart} pair={pair}/></div> : null}
       </div>
   );
 }
@@ -155,11 +156,12 @@ const getChartData = async(pair: string, mode: string) => {
     return {time: time, price: price};
 }
 
-const ChartButtons = (props: any) => {
+interface ChartButtonsProps{
+  pair: string;
+  setChart: (chart: JSX.Element) => void;
+}
 
-  let pair = props.pair;
-  let setChart = props.setChart;
-
+const ChartButtons:React.FC<ChartButtonsProps> = ({pair, setChart}) => {
   const makeBold = (id: string) => {
     let allButtons = document.querySelector('.Buttons')?.children as HTMLCollectionOf<HTMLElement>;
     for(let i = 0; i<allButtons!.length; i++){
