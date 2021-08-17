@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import { Line, defaults } from 'react-chartjs-2';
 import { list } from './List';
@@ -129,13 +130,12 @@ const getChartData = async(pair: string, mode: string) => {
     if(mode !== '1H'){
       for(let entry of arr){
         let currentTime = await entry[0];
-        let date = new Date(await currentTime);
-        let dateString = `${date}`;
+        let date = dayjs(await currentTime)
+        let dateString = "";
         if(interval === 'hourly'){
-          dateString = dateString.substr(dateString.length - 48, 5);
+          dateString = date.format("hh:mm");
         }else{
-          dateString = date.toUTCString();
-          dateString = dateString.substr(5,dateString.length-17);
+          dateString = date.format("DD.MM.YYYY");
         }
         time.push(dateString);
         price.push(await entry[1]);
@@ -144,9 +144,9 @@ const getChartData = async(pair: string, mode: string) => {
       for(let i = await arr.length-15; i< await arr.length; i++){
         let entry = await arr[i];
         let currentTime = await entry[0];
-        let date = new Date(await currentTime);
-        let dateString = `${date}`;
-        dateString = dateString.substr(dateString.length-48, 5);
+        let date = dayjs(await currentTime);
+        let dateString = "";
+        dateString = date.format("hh:mm");
         time.push(dateString);
         price.push(await entry[1]);
       }
