@@ -44,7 +44,7 @@ const App = () => {
         pair = pair.replace("XDG", "DOGE");
       }
       for(let i = 0; i<currencyList.length; i++){
-        if(currencyList[i].pair === msg.pair){
+        if(currencyList[i].pair === pair){
           alert("Pair already added!");
           return;
         }
