@@ -170,11 +170,12 @@ canvas{
 
 .PairList{
   position: absolute;
-  margin-top: 59px;
+  margin-top: 65px;
   max-height: 200px;
   width: 150px;
   overflow: scroll;
   border: 2px solid #1D74FF;
+  border-top: none;
   background-color: white;
   box-shadow: inset 0px -150px 100px -200px;
 }
