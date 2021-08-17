@@ -36,20 +36,34 @@ const App = () => {
     }
 
     if(msg.status==="subscribed"){
+      let pair = msg.pair;
+      if(pair.includes("XBT")){
+        pair = pair.replace("XBT", "BTC");
+      }
+      if(pair.includes("XDG")){
+        pair = pair.replace("XDG", "DOGE");
+      }
       for(let i = 0; i<currencyList.length; i++){
         if(currencyList[i].pair === msg.pair){
           alert("Pair already added!");
           return;
         }
       }
-      setCurrencyList([...currencyList,{pair: msg.pair, price: "..."}])
+      setCurrencyList([...currencyList,{pair: pair, price: "..."}])
       return;
     }
 
     if(msg[2] === "ticker"){
       let arr = [...currencyList];
+      let tickerPair = msg[3];
+      if(tickerPair.includes("XBT")){
+        tickerPair = tickerPair.replace("XBT", "BTC");
+      }
+      if(tickerPair.includes("XDG")){
+        tickerPair = tickerPair.replace("XDG", "DOGE");
+      }
       arr.forEach(currency => {
-        if(currency.pair === msg[3]){
+        if(currency.pair === tickerPair){
           currency.price = parseFloat(msg[1].c[0]).toLocaleString("de-DE");
         }
       });

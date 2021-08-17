@@ -15,7 +15,6 @@ interface PairViewProps extends Currency{
 }
 
 export const PairView: React.FC<PairViewProps> = ({pair, price, currencyList, setCurrencyList, unsubscribe}) => {
-
   let firstCur = pair.split("/")[0];
   let secondCur = pair.split("/")[1];
   const [showChart, setShowChart] = useState(false);
