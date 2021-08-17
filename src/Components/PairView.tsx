@@ -162,6 +162,11 @@ interface ChartButtonsProps{
 }
 
 const ChartButtons:React.FC<ChartButtonsProps> = ({pair, setChart}) => {
+  useEffect(() => {
+    let el = document.getElementById("day") as HTMLElement;
+    el.style.fontWeight = "bold";
+  }, []);
+
   const makeBold = (id: string) => {
     let allButtons = document.querySelector('.Buttons')?.children as HTMLCollectionOf<HTMLElement>;
     for(let i = 0; i<allButtons!.length; i++){
@@ -170,11 +175,6 @@ const ChartButtons:React.FC<ChartButtonsProps> = ({pair, setChart}) => {
     let el = document.getElementById(id) as HTMLElement;
     el.style.fontWeight = "bold";
   }
-
-  useEffect(() => {
-    let el = document.getElementById("day") as HTMLElement;
-    el.style.fontWeight = "bold";
-  }, []);
 
   return(
     <div className="Buttons">
