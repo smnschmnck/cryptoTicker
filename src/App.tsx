@@ -129,24 +129,22 @@ const subscribeFromLocalStorage = (currencyList: Currency[], setCurrencyList: (c
 }
 
 const clearCurrencyList =  (currencyList: Currency[], setCurrencyList: (currencyList: Currency[]) => void) => {
-  let currencyListCopy = [...currencyList];
-  for(let i = 0; i<currencyListCopy.length; i++){
-    unsubscribe(currencyListCopy[i].pair);
-  }
+  unsubscribe(JSON.stringify(currencyList.map(entry => entry.pair)));
   setCurrencyList([]);
 }
 
 const unsubscribe = (pair: string) => {
+  let jsonPair = JSON.parse(pair);
+
   let unSub = {
     "event": "unsubscribe",
-    "pair": [
-      pair
-    ],
+    "pair": jsonPair,
     "subscription": {
       "name": "ticker"
     }
   };
 
+  console.log(JSON.stringify(unSub));
   socket.send(JSON.stringify(unSub));
 }
 
