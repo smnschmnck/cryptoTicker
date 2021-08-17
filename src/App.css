@@ -54,14 +54,19 @@ b{
   flex-wrap: nowrap;
   overflow: scroll;
   height: fit-content;
-  min-height: 55vh;
+  min-height: 70vh;
 }
 
 .PairForm{
   display: flex;
   align-items: center;
   flex-direction: column;
-  max-height: 300px;
+}
+
+@media only screen and (max-width: 600px){
+  .PairForm{
+    height: 250px;
+  }
 }
 
 .PairView{
@@ -226,7 +231,6 @@ canvas{
 }
 
 @media only screen and (min-width: 600px) {
-
   .AddButton:hover{
     transform: scale(1.2);
   }
