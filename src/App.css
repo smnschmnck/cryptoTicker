@@ -154,9 +154,10 @@ canvas{
   text-align: center;
   border: none;
   padding-left: 20px;
-  height: 40px;
+  height: 35px;
   margin: 5px;
   border-radius: 0;
+  background-color: transparent;
 }
 
 .PairInput:focus{
@@ -173,12 +174,13 @@ canvas{
 
 .PairList{
   position: absolute;
-  margin-top: 64px;
+  margin-top: 59px;
   max-height: 200px;
   width: 150px;
   overflow: scroll;
   border: 2px solid #1D74FF;
   background-color: white;
+  box-shadow: inset 0px -150px 100px -200px;
 }
 
 .assButt{
@@ -186,10 +188,9 @@ canvas{
   background-color: white;
   height: 100px;
   color: #1D74FF;
-  min-height: 35px;
-  max-height: 50px;
+  height: 45px;
   width: 150px;
-  border-top: 1px solid #1D74FF;
+  border-bottom: 1px solid #1D74FF;
 }
 
 .assButt:hover{

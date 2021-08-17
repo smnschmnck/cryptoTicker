@@ -16,6 +16,17 @@ const App = () => {
   const[connectionEst, setConnectionEst] = useState(false);
   const[focusOnInp, setFocusOnInp] = useState(false);
 
+  document.onkeydown = function(evt) {
+    evt = evt || window.event;
+    let isEscape = false;
+    if ("key" in evt) {
+        isEscape = (evt.key === "Escape" || evt.key === "Esc");
+    }
+    if (isEscape && document.activeElement === document.getElementById('PairInput')){
+      document.getElementById('PairInput')?.blur();
+    }
+  };
+
   socket.onmessage = ({data}) =>{
     let msg = JSON.parse(data);
 
@@ -84,7 +95,8 @@ const App = () => {
             onSubmit={event=>event.preventDefault()} 
             onClick={() => document.getElementById('PairInput')?.focus()} 
             autoComplete="off">
-              <input id="PairInput" className="PairInput" 
+              <input id="PairInput" 
+                className="PairInput" 
                 onFocus={() => setFocusOnInp(true)} 
                 onBlur={() => setFocusOnInp(false)} 
                 value={pairInput} 
