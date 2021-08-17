@@ -14,6 +14,7 @@ const App = () => {
   const[currencyList, setCurrencyList] = useState<Currency[]>([]);
   const[pairInput, setPairInput] = useState("");
   const[connectionEst, setConnectionEst] = useState(false);
+  const[focusOnInp, setFocusOnInp] = useState(false);
 
   socket.onmessage = ({data}) =>{
     let msg = JSON.parse(data);
@@ -78,18 +79,39 @@ const App = () => {
             unsubscribe={unsubscribe}/>)
         }
         {currencyList.length ===0 ? <h3><b>Add Crypto Trading Pair </b>(i.e. ETH/EUR)</h3> : null}
-        <form className="AddPair" onSubmit={event=>event.preventDefault()} onClick={() => document.getElementById('PairInput')?.focus()} autoComplete="off">
-          <input id="PairInput" className="PairInput" value={pairInput} onChange={e => setPairInput(e.target.value.toUpperCase())} placeholder={"Add pair..."} autoFocus list="PairList"/>
-          <datalist id="PairList">
-            {assetPairs.filter(pair => pair.match("^"+pairInput.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))).map(pair => <option key={pair}>{pair}</option>)}
-          </datalist>
-          <button title="Add" className="AddButton" onClick={() => {subscribeToPair(JSON.stringify([pairInput]), currencyList, setCurrencyList); setPairInput("");}}/>
-        </form>
+        <div className="PairForm">
+          <form className="AddPair" 
+            onSubmit={event=>event.preventDefault()} 
+            onClick={() => document.getElementById('PairInput')?.focus()} 
+            autoComplete="off">
+              <input id="PairInput" className="PairInput" 
+                onFocus={() => setFocusOnInp(true)} 
+                onBlur={() => setFocusOnInp(false)} 
+                value={pairInput} 
+                onChange={e => setPairInput(e.target.value.toUpperCase())} 
+                placeholder={"Add pair..."} autoFocus/>
+              <button 
+                title="Add" 
+                className="AddButton" 
+                onClick={() => {subscribeToPair(JSON.stringify([pairInput]), currencyList, setCurrencyList); setPairInput("");}}/>
+          </form>
+          {focusOnInp ? <div className="PairList">
+              {assetPairs.filter(pair => 
+                pair.match("^"+pairInput.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')))
+                .map(pair => <button className="assButt" key={pair} 
+                onMouseDown={() => {
+                  subscribeToPair(JSON.stringify([pair]), currencyList, setCurrencyList);
+                  setPairInput("");
+                }}>{pair}</button>)}
+          </div> : null}
+        </div>
     </div>
     <div className="Storage">
       <button className="StorageButton" onClick={() => clearCurrencyList(currencyList, setCurrencyList)} title="Clear">Clear</button>
       <button className="StorageButton" onClick={() => saveToLocalStorage(currencyList)} title="Save in Browser">Save</button>
-      <button className="StorageButton" onClick={() => subscribeFromLocalStorage(currencyList, setCurrencyList)} title="Retrieve last Config">Load</button>
+      <button className="StorageButton" 
+        onClick={() => subscribeFromLocalStorage(currencyList, setCurrencyList)} 
+        title="Retrieve last Config">Load</button>
     </div>
   </div>;
 
@@ -144,7 +166,6 @@ const unsubscribe = (pair: string) => {
     }
   };
 
-  console.log(JSON.stringify(unSub));
   socket.send(JSON.stringify(unSub));
 }
 

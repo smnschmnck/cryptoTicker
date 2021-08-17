@@ -57,6 +57,13 @@ b{
   min-height: 55vh;
 }
 
+.PairForm{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  max-height: 300px;
+}
+
 .PairView{
   display: flex;
   align-items: center;
@@ -73,13 +80,6 @@ b{
 
 p{
   word-break: break-all;
-}
-
-.PairContainer{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
 }
 
 .InfoView{
@@ -132,12 +132,16 @@ p{
   font-weight: bolder;
 }
 
+canvas{
+  margin: 25px;
+}
+
 .AddPair{
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  border-radius: 25px;
+  border-radius: 35px;
   min-height: 40px;
   width: 220px;
   padding: 0;
@@ -149,19 +153,54 @@ p{
 .PairInput{
   text-align: center;
   border: none;
-  width: 150px;
   padding-left: 20px;
+  height: 40px;
   margin: 5px;
   border-radius: 0;
-}
-
-canvas{
-  margin: 25px;
 }
 
 .PairInput:focus{
   outline: none;
   border-radius: 0;
+}
+
+.PairContainer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.PairList{
+  position: absolute;
+  margin-top: 64px;
+  max-height: 200px;
+  width: 150px;
+  overflow: scroll;
+  border: 2px solid #1D74FF;
+  background-color: white;
+}
+
+.assButt{
+  border: none;
+  background-color: white;
+  height: 100px;
+  color: #1D74FF;
+  min-height: 35px;
+  max-height: 50px;
+  width: 150px;
+  border-top: 1px solid #1D74FF;
+}
+
+.assButt:hover{
+  background-color: #1D74FF;
+  color: white;
+  width: 150px;
+  font-weight: bold;
+}
+
+.assButt:hover:before{
+  border: none;
 }
 
 .AddButton{
@@ -195,6 +234,7 @@ canvas{
 }
 
 @media only screen and (min-width: 600px) {
+
   .AddButton:hover{
     transform: scale(1.2);
   }
