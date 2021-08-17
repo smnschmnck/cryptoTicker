@@ -123,15 +123,6 @@ p{
   height: 50px;
 }
 
-.GraphModeButtonSelected{
-  border: none;
-  background-color: transparent;
-  width: 50px;
-  height: 50px;
-  color: white;
-  font-weight: bolder;
-}
-
 canvas{
   margin: 25px;
 }
@@ -242,11 +233,7 @@ canvas{
 
   .DelButton:hover{
     transform: scale(1.2);
-  }  
-
-  .GraphButton:hover{
-    transform: scale(1.2);
-  } 
+  }
 
   .StorageButton:hover{
     font-weight: bold;
