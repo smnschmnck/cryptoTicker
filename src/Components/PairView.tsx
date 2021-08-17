@@ -160,48 +160,41 @@ const ChartButtons = (props: any) => {
   let pair = props.pair;
   let setChart = props.setChart;
 
-  let buttonArray = [
-    {className: "GraphModeButton", mode: "1H"},
-    {className: "GraphModeButtonSelected", mode: "1D"},
-    {className: "GraphModeButton", mode: "1W"},
-    {className: "GraphModeButton", mode: "1M"},
-    {className: "GraphModeButton", mode: "1Y"},
-    {className: "GraphModeButton", mode: "ALL"},
-  ];
-  const[buttonList, setButtonList] = useState(buttonArray);
-
-  const ChartButton = (props: any) => {
-
-    const unBold = () => {
-      let bListCopy = [...buttonList];
-      bListCopy.forEach(button => {
-        button.className = "GraphModeButton";
-      });
-      setButtonList(bListCopy);
+  const makeBold = (id: string) => {
+    let allButtons = document.querySelector('.Buttons')?.children as HTMLCollectionOf<HTMLElement>;
+    for(let i = 0; i<allButtons!.length; i++){
+      allButtons![i].style.fontWeight = 'normal';
     }
-
-    const makeBold = () => {
-      let bListCopy = [...buttonList];
-      bListCopy.forEach(button => {
-        if(button.mode === props.mode){
-          button.className = "GraphModeButtonSelected";
-        }
-      });
-      setButtonList(bListCopy);
-    }
-
-    return(
-      <button className={props.className} onClick={async() => {
-        setChart(await drawChart(pair, props.mode));
-        unBold();
-        makeBold();
-      }}>{props.mode}</button>
-      );
+    let el = document.getElementById(id) as HTMLElement;
+    el.style.fontWeight = "bold";
   }
 
   return(
     <div className="Buttons">
-      {buttonList.map(button => <ChartButton className={button.className} mode={button.mode}/>)}
-    </div>
+      <button className="GraphModeButton" id="hour" onClick={async() => {
+        setChart(await drawChart(pair, "1H"));
+        makeBold("hour");
+      }}>1H</button>
+      <button className="GraphModeButton" id="day" onClick={async() => {
+        setChart(await drawChart(pair, "1D"));
+        makeBold("day");
+      }}>1D</button>
+      <button className="GraphModeButton" id="week" onClick={async() => {
+        setChart(await drawChart(pair, "1W"));
+        makeBold("week");
+      }}>1W</button>
+      <button className="GraphModeButton" id="month" onClick={async() => {
+        setChart(await drawChart(pair, "1M"));
+        makeBold("month");
+      }}>1M</button>
+      <button className="GraphModeButton" id="year" onClick={async() => {
+        setChart(await drawChart(pair, "1Y"));
+        makeBold("year");
+      }}>1Y</button>
+      <button className="GraphModeButton" id="all" onClick={async() => {
+        setChart(await drawChart(pair, "ALL"));
+        makeBold("all");
+      }}>ALL</button>
+    </div>  
   );
 }
