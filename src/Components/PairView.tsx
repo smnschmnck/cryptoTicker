@@ -26,7 +26,7 @@ export const PairView: React.FC<PairViewProps> = (props) => {
               <p className="InfoView"><b>{firstCur}</b>: {props.price + secondCur}</p>
               <button className="DelButton" title="Delete" onClick={() => {
                   props.setCurrencyList(props.currencyList.filter(currency => currency.pair !== props.pair));
-                  props.unsubscribe(props.pair);
+                  props.unsubscribe(JSON.stringify([props.pair]));
               }}/>
           </div>
           {showChart ? <div>{chart}<ChartButtons setChart={setChart} pair={props.pair}/></div> : null}

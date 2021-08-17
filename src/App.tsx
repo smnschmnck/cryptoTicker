@@ -157,6 +157,7 @@ const clearCurrencyList =  (currencyList: Currency[], setCurrencyList: (currency
 
 const unsubscribe = (pair: string) => {
   let jsonPair = JSON.parse(pair);
+  console.log(jsonPair);
 
   let unSub = {
     "event": "unsubscribe",
