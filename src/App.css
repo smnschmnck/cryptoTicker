@@ -18,12 +18,12 @@
 }
 
 h1{
+  height: 15vh;
   font-weight: 300;
   text-align: center;
-  padding: 0;
-  margin: 2rem;
-  margin-bottom: 4rem;
+  line-height: 15vh;
   color: #1D74FF;
+  margin: 0 auto;
 }
 
 h3{
@@ -52,9 +52,9 @@ b{
   align-items: center;
   flex-direction: column;
   flex-wrap: nowrap;
-  overflow: scroll;
+  overflow-x: auto;
   height: fit-content;
-  min-height: 70vh;
+  min-height: 75vh;
 }
 
 .PairForm{
@@ -65,7 +65,7 @@ b{
 
 @media only screen and (max-width: 600px){
   .PairForm{
-    height: 250px;
+    height: 300px;
   }
 }
 
@@ -77,7 +77,7 @@ b{
   flex-direction: column;
   border-radius: 25px;
   min-width: 220px;
-  margin: 10px;
+  margin: 7px;
   background-color: #1D74FF;
   color: white;
   transition: 0.5s;
@@ -178,15 +178,13 @@ canvas{
 }
 
 .PairList{
-  position: absolute;
-  margin-top: 65px;
   max-height: 200px;
   width: 150px;
-  overflow: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
   border: 2px solid #1D74FF;
   border-top: none;
   background-color: white;
-  box-shadow: inset 0px -150px 100px -200px;
 }
 
 .assButt{
@@ -223,6 +221,7 @@ canvas{
 }
 
 .Storage{
+  height: 10vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -261,4 +260,19 @@ canvas{
   .GraphModeButton:hover{
     font-weight: bold;
   }
+}
+
+::-webkit-scrollbar{
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track{
+  background-color: white;
+  color: transparent;
+}
+
+::-webkit-scrollbar-thumb{
+  background-color: #949494;
+  border-radius: 20px;
 }
