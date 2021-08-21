@@ -7,10 +7,21 @@
   flex-direction: column;
 }
 
-.LoadGif{
-  height: 200px;
-  width: auto;
-  background-size: cover;
+.Spinner{
+  width: 6rem;
+  height: 6rem;
+  display: inline-block;
+  border: 5px solid rgba(65, 105, 225, 0.137);
+  border-radius: 50%;
+  border-top-color: #1D74FF;
+  margin-bottom: 3rem;
+  animation: 1s spin infinite ease-in-out;
+}
+
+@keyframes spin{
+  to{
+    transform: rotate(360deg);
+  }
 }
 
 .Waiting{

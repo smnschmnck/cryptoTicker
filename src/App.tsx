@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import './App.css';
 import { PairView } from './Components/PairView'
 import { assetPairs } from './AssetPairs';
-import loader from './img/loader.gif';
 const socket = new WebSocket('wss://ws.kraken.com');
 
 interface Currency{
@@ -87,7 +86,7 @@ const App = () => {
   }
 
   let loading = <div className="Loader">
-      <img className="LoadGif" src={loader} alt="Loading"/>
+      <div className="Spinner"></div>
       <p className="Waiting">Waiting for Connection</p>
     </div>;
 
