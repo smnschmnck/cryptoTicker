@@ -189,6 +189,7 @@ canvas{
 }
 
 .PairList{
+  margin-top: -10px;
   max-height: 200px;
   width: 150px;
   overflow-y: auto;
