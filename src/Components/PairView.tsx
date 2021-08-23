@@ -133,7 +133,7 @@ const getChartData = async(pair: string, mode: string) => {
         let date = dayjs(await currentTime)
         let dateString = "";
         if(interval === 'hourly'){
-          dateString = date.format("hh:mm");
+          dateString = date.format("HH:mm");
         }else{
           dateString = date.format("DD.MM.YYYY");
         }
