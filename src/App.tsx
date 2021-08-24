@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import './App.css';
 import { PairView } from './Components/PairView'
 import { assetPairs } from './AssetPairs';
@@ -14,6 +14,8 @@ const App = () => {
   const[pairInput, setPairInput] = useState("");
   const[connectionEst, setConnectionEst] = useState(false);
   const[focusOnInp, setFocusOnInp] = useState(false);
+  const scrollHere = useRef<null | HTMLButtonElement>(null)
+  const topEl = useRef<null | HTMLButtonElement>(null)
 
   document.onkeydown = function(evt) {
     evt = evt || window.event;
@@ -90,6 +92,38 @@ const App = () => {
       <p className="Waiting">Waiting for Connection</p>
     </div>;
 
+  const[cursor, setCursor] = useState(-1);
+
+  const handleKeyDown = (key: string) => {
+    if(key === "Enter"){
+      let subPair = "";
+      if(cursor < 0){
+        subPair = pairInput;
+      }else{
+        subPair = filteredAssetPairs[cursor];
+      }
+      subscribeToPair(JSON.stringify([subPair]), currencyList, setCurrencyList); 
+      setPairInput("");
+      setCursor(-1);
+      let pairList = document.getElementById("pairList");
+      if(pairList){
+        pairList.scrollTop = 0;
+      }
+      setFilteredAssetPairs(assetPairs);
+    }else{
+      if(scrollHere.current){
+        scrollHere.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      if(key === "ArrowUp" && cursor >= 0){
+        setCursor(cursor-1);
+      }else if(key === "ArrowDown" && cursor < filteredAssetPairs.length -1){
+        setCursor(cursor+1);
+      }
+    }
+  }
+
+  const[filteredAssetPairs, setFilteredAssetPairs] = useState(assetPairs);
+
   let page = 
   <div className="App">
     <h1><b>Crypto</b>Ticker</h1>
@@ -104,32 +138,41 @@ const App = () => {
         }
         {currencyList.length ===0 ? <h3><b>Add Crypto Trading Pair </b>(i.e. ETH/EUR)</h3> : null}
         <div className="PairForm">
-          <form className="AddPair" 
-            onSubmit={event=>event.preventDefault()} 
-            onClick={() => document.getElementById('PairInput')?.focus()} 
-            autoComplete="off">
+          <div className="AddPair" 
+            onClick={() => document.getElementById('PairInput')?.focus()}>
               <input id="PairInput" 
                 className="PairInput" 
                 onFocus={() => setFocusOnInp(true)} 
                 onBlur={() => setFocusOnInp(false)} 
                 value={pairInput} 
-                onChange={e => setPairInput(e.target.value.toUpperCase())} 
-                placeholder={"Add pair..."} autoFocus/>
+                onChange={e => {
+                  setPairInput(e.target.value.toUpperCase());
+                  setCursor(-1);
+                  let pairList = document.getElementById("pairList");
+                  if(pairList){
+                    pairList.scrollTop = 0;
+                  }
+                  setFilteredAssetPairs(assetPairs.filter((pair) => pair.match("^"+e.target.value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))));
+                }}
+                onKeyDown={e => handleKeyDown(e.key)}
+                placeholder={"Add pair..."} 
+                autoFocus
+                autoComplete="off"/>
               <button 
                 title="Add" 
                 className="AddButton" 
                 onClick={() => {subscribeToPair(JSON.stringify([pairInput]), currencyList, setCurrencyList); setPairInput("");}}/>
-          </form>
-          {focusOnInp ? <div className="PairList">
-              {assetPairs.filter(pair => 
-                pair.match("^"+pairInput.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')))
-                .map(pair => <button 
-                  className="assButt" 
-                  key={pair} 
+          </div>
+          {focusOnInp ? <div className="PairList" id="pairList">
+              {filteredAssetPairs.map((pair, i) => 
+                <button className={cursor === i ? "assButtActive" :"assButt"} 
+                  ref={cursor === i ? scrollHere : cursor === 0 ? topEl : null}
+                  key={i} 
                   onMouseDown={() => {
                     subscribeToPair(JSON.stringify([pair]), currencyList, setCurrencyList);
                     setPairInput("");
-                }}>{pair}</button>)}
+                }}>{pair}</button>)
+              }
           </div> : null}
         </div>
     </div>

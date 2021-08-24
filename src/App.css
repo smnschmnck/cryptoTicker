@@ -212,12 +212,18 @@ canvas{
 .assButt:hover{
   background-color: #1D74FF;
   color: white;
-  width: 150px;
   font-weight: bold;
 }
 
-.assButt:hover:before{
+.assButtActive{
   border: none;
+  background-color: #1D74FF;
+  height: 100px;
+  color: white;
+  height: 45px;
+  width: 150px;
+  border-bottom: 1px solid #1D74FF;
+  font-weight: bold;
 }
 
 .AddButton{
