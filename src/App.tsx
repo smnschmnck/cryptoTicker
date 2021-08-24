@@ -139,7 +139,14 @@ const App = () => {
               <input id="PairInput" 
                 className="PairInput" 
                 onFocus={() => setFocusOnInp(true)} 
-                onBlur={() => setFocusOnInp(false)} 
+                onBlur={() => {
+                  setCursor(-1);
+                  let pairList = document.getElementById("pairList");
+                  if(pairList){
+                    pairList.scrollTop = 0;
+                  }
+                  setFocusOnInp(false);}
+                } 
                 value={pairInput} 
                 onChange={e => {
                   setPairInput(e.target.value.toUpperCase());
@@ -192,7 +199,6 @@ const App = () => {
 }
 
 const subscribeToPair = (pair: string, currencyList: Currency[], setCurrencyList: (currencyList: Currency[]) => void) => {
-
   let jsonPair = {};
 
   try{
