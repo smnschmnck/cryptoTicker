@@ -15,7 +15,8 @@ const App = () => {
   const[connectionEst, setConnectionEst] = useState(false);
   const[focusOnInp, setFocusOnInp] = useState(false);
   const scrollHere = useRef<null | HTMLButtonElement>(null)
-  const topEl = useRef<null | HTMLButtonElement>(null)
+  const[cursor, setCursor] = useState(-1);
+  const[filteredAssetPairs, setFilteredAssetPairs] = useState(assetPairs);
 
   document.onkeydown = function(evt) {
     evt = evt || window.event;
@@ -91,8 +92,6 @@ const App = () => {
       <p className="Waiting">Waiting for Connection</p>
     </div>;
 
-  const[cursor, setCursor] = useState(-1);
-
   const handleKeyDown = (key: string) => {
     if(key === "Enter"){
       let subPair = "";
@@ -120,8 +119,6 @@ const App = () => {
       }
     }
   }
-
-  const[filteredAssetPairs, setFilteredAssetPairs] = useState(assetPairs);
 
   let page = 
   <div className="App">
@@ -165,7 +162,7 @@ const App = () => {
           {focusOnInp ? <div className="PairList" id="pairList">
               {filteredAssetPairs.map((pair, i) => 
                 <button className={cursor === i ? "assButtActive" :"assButt"} 
-                  ref={cursor === i ? scrollHere : cursor === 0 ? topEl : null}
+                  ref={cursor === i ? scrollHere : null}
                   key={i} 
                   onMouseDown={() => {
                     subscribeToPair(JSON.stringify([pair]), currencyList, setCurrencyList);
