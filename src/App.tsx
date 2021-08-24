@@ -82,7 +82,6 @@ const App = () => {
   }
 
   socket.onclose = () => {
-    console.log("Connection Lost. Please Reload");
     localStorage.setItem("emergencyList", JSON.stringify(currencyList.map(entry => entry.pair)))
     window.location.reload();
   }
