@@ -82,7 +82,7 @@ const App = () => {
   }
 
   socket.onclose = () => {
-    alert("Connection Lost. Please Reload");
+    console.log("Connection Lost. Please Reload");
     localStorage.setItem("emergencyList", JSON.stringify(currencyList.map(entry => entry.pair)))
     window.location.reload();
   }
@@ -136,7 +136,7 @@ const App = () => {
             setCurrencyList={setCurrencyList}
             unsubscribe={unsubscribe}/>)
         }
-        {currencyList.length ===0 ? <h3><b>Add Crypto Trading Pair </b>(i.e. ETH/EUR)</h3> : null}
+        {currencyList.length === 0 ? <h3><b>Add Crypto Trading Pair </b>(i.e. ETH/EUR)</h3> : null}
         <div className="PairForm">
           <div className="AddPair" 
             onClick={() => document.getElementById('PairInput')?.focus()}>
