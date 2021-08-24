@@ -146,7 +146,7 @@ const getChartData = async(pair: string, mode: string) => {
         let currentTime = await entry[0];
         let date = dayjs(await currentTime);
         let dateString = "";
-        dateString = date.format("hh:mm");
+        dateString = date.format("HH:mm");
         time.push(dateString);
         price.push(await entry[1]);
       }
