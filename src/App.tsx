@@ -167,6 +167,12 @@ const App = () => {
                   onMouseDown={() => {
                     subscribeToPair(JSON.stringify([pair]), currencyList, setCurrencyList);
                     setPairInput("");
+                    setFilteredAssetPairs(assetPairs);
+                    setCursor(-1);
+                    let pairList = document.getElementById("pairList");
+                    if(pairList){
+                      pairList.scrollTop = 0;
+                    }
                 }}>{pair}</button>)
               }
           </div> : null}
