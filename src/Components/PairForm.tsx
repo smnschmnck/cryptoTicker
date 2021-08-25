@@ -30,6 +30,13 @@ export const PairForm: React.FC<PairFormProps> = ({subscribeToPair, currencyList
         }
       };
 
+    const resetPairInput = () => {
+      setPairInput("");
+      setFilteredAssetPairs(assetPairs);
+      setCursor(-1);
+      scrollToTop();
+    }
+
     const handleKeyDown = (key: string) => {
         if(key === "Enter"){
           let subPair = "";
@@ -39,13 +46,7 @@ export const PairForm: React.FC<PairFormProps> = ({subscribeToPair, currencyList
             subPair = filteredAssetPairs[cursor];
           }
           subscribeToPair(JSON.stringify([subPair]), currencyList, setCurrencyList); 
-          setPairInput("");
-          setCursor(-1);
-          let pairList = document.getElementById("pairList");
-          if(pairList){
-            pairList.scrollTop = 0;
-          }
-          setFilteredAssetPairs(assetPairs);
+          resetPairInput();
         }else{
           if(scrollHere.current){
             scrollHere.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -56,7 +57,7 @@ export const PairForm: React.FC<PairFormProps> = ({subscribeToPair, currencyList
             setCursor(cursor+1);
           }
         }
-      }
+    }
 
     return (<div className="PairForm">
     <div className="AddPair" 
@@ -66,18 +67,14 @@ export const PairForm: React.FC<PairFormProps> = ({subscribeToPair, currencyList
           onFocus={() => setFocusOnInp(true)} 
           onBlur={() => {
             setCursor(-1);
-            let pairList = document.getElementById("pairList");
-            if(pairList) pairList.scrollTop = 0;
+            scrollToTop();
             setFocusOnInp(false);
           }} 
           value={pairInput} 
           onChange={e => {
             setPairInput(e.target.value.toUpperCase());
             setCursor(-1);
-            let pairList = document.getElementById("pairList");
-            if(pairList){
-              pairList.scrollTop = 0;
-            }
+            scrollToTop();
             setFilteredAssetPairs(assetPairs.filter((pair) => pair.match("^"+e.target.value.toUpperCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))));
           }}
           onKeyDown={e => handleKeyDown(e.key)}
@@ -89,13 +86,7 @@ export const PairForm: React.FC<PairFormProps> = ({subscribeToPair, currencyList
           className="AddButton" 
           onClick={() => {
             subscribeToPair(JSON.stringify([pairInput]), currencyList, setCurrencyList); 
-            setPairInput("");
-            setFilteredAssetPairs(assetPairs);
-            setCursor(-1);
-            let pairList = document.getElementById("pairList");
-            if(pairList){
-              pairList.scrollTop = 0;
-            }
+            resetPairInput();
           }
         }/>
     </div>
@@ -106,15 +97,16 @@ export const PairForm: React.FC<PairFormProps> = ({subscribeToPair, currencyList
             key={i} 
             onMouseDown={() => {
               subscribeToPair(JSON.stringify([pair]), currencyList, setCurrencyList);
-              setPairInput("");
-              setFilteredAssetPairs(assetPairs);
-              setCursor(-1);
-              let pairList = document.getElementById("pairList");
-              if(pairList){
-                pairList.scrollTop = 0;
-              }
+              resetPairInput();
           }}>{pair}</button>)
         }
     </div> : null}
   </div>);
+}
+
+const scrollToTop = () => {
+  let pairList = document.getElementById("pairList");
+  if(pairList){
+    pairList.scrollTop = 0;
+  }
 }
