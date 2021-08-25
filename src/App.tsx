@@ -142,11 +142,9 @@ const App = () => {
                 onBlur={() => {
                   setCursor(-1);
                   let pairList = document.getElementById("pairList");
-                  if(pairList){
-                    pairList.scrollTop = 0;
-                  }
-                  setFocusOnInp(false);}
-                } 
+                  if(pairList) pairList.scrollTop = 0;
+                  setFocusOnInp(false);
+                }} 
                 value={pairInput} 
                 onChange={e => {
                   setPairInput(e.target.value.toUpperCase());
@@ -155,7 +153,7 @@ const App = () => {
                   if(pairList){
                     pairList.scrollTop = 0;
                   }
-                  setFilteredAssetPairs(assetPairs.filter((pair) => pair.match("^"+e.target.value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))));
+                  setFilteredAssetPairs(assetPairs.filter((pair) => pair.match("^"+e.target.value.toUpperCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))));
                 }}
                 onKeyDown={e => handleKeyDown(e.key)}
                 placeholder={"Add pair..."} 
