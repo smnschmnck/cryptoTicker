@@ -3,6 +3,8 @@ killall node
 
 cd src
 
+cd Assets
+
 rm AssetPairs.tsx
 
 array=( $(curl https://api.kraken.com/0/public/AssetPairs | grep -o "wsname\":\"[A-Z]*./[A-Z]*") )
@@ -29,6 +31,8 @@ for((i=0; i<${#array[@]}; i++))
     done
 
  echo -n "].sort();" >> AssetPairs.tsx
+
+ cd ..
 
  cd ..
 
