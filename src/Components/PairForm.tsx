@@ -87,7 +87,17 @@ export const PairForm: React.FC<PairFormProps> = ({subscribeToPair, currencyList
         <button 
           title="Add" 
           className="AddButton" 
-          onClick={() => {subscribeToPair(JSON.stringify([pairInput]), currencyList, setCurrencyList); setPairInput("");}}/>
+          onClick={() => {
+            subscribeToPair(JSON.stringify([pairInput]), currencyList, setCurrencyList); 
+            setPairInput("");
+            setFilteredAssetPairs(assetPairs);
+            setCursor(-1);
+            let pairList = document.getElementById("pairList");
+            if(pairList){
+              pairList.scrollTop = 0;
+            }
+          }
+        }/>
     </div>
     {focusOnInp ? <div className="PairList" id="pairList">
         {filteredAssetPairs.map((pair, i) => 
