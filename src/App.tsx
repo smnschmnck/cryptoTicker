@@ -15,12 +15,10 @@ const App = () => {
 
   socket.onmessage = ({data}) =>{
     let msg = JSON.parse(data);
-
     if(msg.status==="error"){
       alert(msg.errorMessage);
       return;
     }
-
     if(msg.status==="subscribed"){
       let pair = msg.pair;
       if(pair.includes("XBT")){
@@ -38,7 +36,6 @@ const App = () => {
       setCurrencyList([...currencyList,{pair: pair, price: "..."}])
       return;
     }
-
     if(msg[2] === "ticker"){
       let arr = [...currencyList];
       let tickerPair = msg[3];
@@ -101,19 +98,18 @@ const App = () => {
   </div>;
 
   return(
-    connectionEst ? page : loading);
+    connectionEst ? page : loading
+  );
 }
 
 const subscribeToPair = (pair: string, currencyList: Currency[], setCurrencyList: (currencyList: Currency[]) => void) => {
   let jsonPair = {};
-
   try{
     jsonPair = JSON.parse(pair);
   }catch(err){
     localStorage.setItem("list", "[]");
     return;
   }
-
   let sub = {
     "event": "subscribe",
     "pair": jsonPair,
@@ -121,7 +117,6 @@ const subscribeToPair = (pair: string, currencyList: Currency[], setCurrencyList
       "name": "ticker"
     }
   };
-
   socket.send(JSON.stringify(sub));
 }
 
@@ -141,7 +136,6 @@ const clearCurrencyList =  (currencyList: Currency[], setCurrencyList: (currency
 
 const unsubscribe = (pair: string) => {
   let jsonPair = JSON.parse(pair);
-
   let unSub = {
     "event": "unsubscribe",
     "pair": jsonPair,
@@ -149,7 +143,6 @@ const unsubscribe = (pair: string) => {
       "name": "ticker"
     }
   };
-
   socket.send(JSON.stringify(unSub));
 }
 
