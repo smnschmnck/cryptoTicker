@@ -184,7 +184,7 @@ canvas{
   margin: 0;
   background: url("img/plus2.png");
   background-size: cover;
-  transition: 0.2s;
+  transition: transform 0.2s;
   cursor: pointer;
 }
 

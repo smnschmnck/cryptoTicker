@@ -85,7 +85,7 @@ export const PairForm: React.FC<PairFormProps> = ({subscribeToPair, currencyList
           title="Add" 
           className="AddButton" 
           style={{
-            opacity: pairInput === "" ? "0%" : "100%",
+            visibility: pairInput === "" ? "hidden" : "visible",
             animation: pairInput === "" ? "none" : "popUpButton 0.4s ease-in-out"
           }}
           onClick={() => {
