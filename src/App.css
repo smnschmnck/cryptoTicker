@@ -68,18 +68,6 @@ b{
   min-height: 75vh;
 }
 
-.PairForm{
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-
-@media only screen and (max-width: 600px){
-  .PairForm{
-    height: 300px;
-  }
-}
-
 .PairView{
   display: flex;
   align-items: center;
@@ -156,7 +144,6 @@ canvas{
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
   border-radius: 35px;
   min-height: 40px;
   width: 220px;
@@ -166,14 +153,55 @@ canvas{
   cursor: text;
 }
 
+.PairForm{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+@media only screen and (max-width: 600px){
+  .PairForm{
+    height: 300px;
+  }
+}
+
 .PairInput{
   text-align: center;
   border: none;
   padding-left: 20px;
   height: 35px;
+  width: 155px;
   margin: 5px;
   border-radius: 0;
   background-color: transparent;
+}
+
+.AddButton{
+  height: 15px;
+  width: 15px;
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: url("img/plus2.png");
+  background-size: cover;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+/*Have to use "background-size: cover" to prevent Firefox from blurring image*/
+@keyframes popUpButton {
+  0%{
+    background-size: cover;
+    transform: scale(0);
+  }
+  40%{
+    background-size: cover;
+    transform: scale(1.2);
+  }
+  100%{
+    background-size: cover;
+    transform: scale(1);
+  }
 }
 
 .PairInput:focus{
@@ -224,33 +252,6 @@ canvas{
   width: 150px;
   border-bottom: 1px solid #1D74FF;
   font-weight: bold;
-}
-.AddButton{
-  height: 15px;
-  width: 15px;
-  border: none;
-  padding: 0;
-  margin: 0;
-  background: url("img/plus2.png");
-  background-size: cover;
-  transition: 0.2s;
-  cursor: pointer;
-}
-
-/*Have to use "background-size: cover" to prevent Firefox from blurring image*/
-@keyframes popUpButton {
-  0%{
-    background-size: cover;
-    transform: scale(0);
-  }
-  40%{
-    background-size: cover;
-    transform: scale(1.2);
-  }
-  100%{
-    background-size: cover;
-    transform: scale(1);
-  }
 }
 
 .Storage{
