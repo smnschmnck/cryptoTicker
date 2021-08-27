@@ -282,6 +282,10 @@ canvas{
     transform: scale(1.2);
   }
 
+  .GraphButton:hover{
+    transform: scale(1.2);
+  }
+
   .StorageButton:hover{
     font-weight: bold;
   }
