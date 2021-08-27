@@ -235,17 +235,20 @@ canvas{
   background-size: cover;
   transition: 0.2s;
   cursor: pointer;
-  animation: popUpButton 0.4s ease-in-out;
 }
 
+/*Have to use "background-size: cover" to prevent Firefox from blurring image*/
 @keyframes popUpButton {
   0%{
+    background-size: cover;
     transform: scale(0);
   }
   40%{
+    background-size: cover;
     transform: scale(1.2);
   }
   100%{
+    background-size: cover;
     transform: scale(1);
   }
 }

@@ -81,14 +81,18 @@ export const PairForm: React.FC<PairFormProps> = ({subscribeToPair, currencyList
           placeholder={"Add pair..."} 
           autoFocus
           autoComplete="off"/>
-        {pairInput !== "" ? <button 
+        <button 
           title="Add" 
           className="AddButton" 
+          style={{
+            opacity: pairInput === "" ? "0%" : "100%",
+            animation: pairInput === "" ? "none" : "popUpButton 0.4s ease-in-out"
+          }}
           onClick={() => {
             subscribeToPair(JSON.stringify([pairInput]), currencyList, setCurrencyList); 
             resetPairInput();
           }
-        }/> : null}
+        }/>
     </div>
     {focusOnInp ? <div className="PairList" id="pairList">
         {filteredAssetPairs.map((pair, i) => 
