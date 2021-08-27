@@ -225,7 +225,6 @@ canvas{
   border-bottom: 1px solid #1D74FF;
   font-weight: bold;
 }
-
 .AddButton{
   height: 15px;
   width: 15px;
@@ -236,6 +235,19 @@ canvas{
   background-size: cover;
   transition: 0.2s;
   cursor: pointer;
+  animation: popUpButton 0.4s ease-in-out;
+}
+
+@keyframes popUpButton {
+  0%{
+    transform: scale(0);
+  }
+  40%{
+    transform: scale(1.2);
+  }
+  100%{
+    transform: scale(1);
+  }
 }
 
 .Storage{
